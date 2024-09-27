@@ -6,11 +6,11 @@
             <div v-if="loading">Loading...</div>
             <div v-if="error">{{ error }}</div>
             <div v-if='filteredCountries.length'>
-                <RouterLink :to="{ name: '' }">
-                    <div v-for="country in filteredCountries" :key="country.code">
-                        <span>{{ country.name }}</span>
-                    </div>
-                </RouterLink>
+                <div v-for="country in filteredCountries" :key="country.code">
+                    <router-link :to="{ name: 'country', params: {countryCode: country.countryCode} }">
+                        <span>{{country.name}}</span>
+                    </router-link>
+                </div>
             </div>
             <div v-else>
                 No countries found
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { fetchData } from "@/api/availableCountries"
+import { fetchAvailableCountries } from "@/api/getAvailableCountries"
 import { computed, onMounted, ref } from "vue"
 
 const countries = ref([]);
@@ -30,7 +30,7 @@ const searchQuery = ref("");
 
 const loadCountries = async () => {
     try {
-        countries.value = await fetchData();
+        countries.value = await fetchAvailableCountries();
     } catch (err) {
         error.value = "Failed to load countries";
     } finally {

@@ -1,4 +1,4 @@
-export const fetchData = async () => {
+export const fetchAvailableCountries = async () => {
     try {
         const response = await fetch("https://date.nager.at/api/v3/AvailableCountries")
         if (!response.ok) {

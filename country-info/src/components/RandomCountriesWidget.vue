@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import { fetchData } from "@/api/availableCountries"
-import { fetchRandomCountries } from "@/api/randomCountriesHolidays"
+import { fetchAvailableCountries, fetchData } from "@/api/getAvailableCountries"
+import { fetchRandomCountries, fetchUpcomingPublicHolidays } from "@/api/getUpcomingPublicHolidays"
 import { onMounted, ref } from "vue"
 
 const widgetForCountryHolidays = ref([]); // Holiday data for random countries
@@ -22,7 +22,7 @@ const error = ref('');
 
 const getRandomCountries = async () => {
     try {
-        const countries = await fetchData();
+        const countries = await fetchAvailableCountries();
         // Shuffle countries and select 3 random countries
         const shuffledCountries = countries.sort(() => 0.5 - Math.random());
         const randomCountries = shuffledCountries.slice(0, 3);
@@ -32,7 +32,7 @@ const getRandomCountries = async () => {
 
         // Fetch holidays for each of the 3 random countries in parallel
         const holidayPromises = randomCountries.map(async (country) => {
-            const holidayData = await fetchRandomCountries(country.countryCode);
+            const holidayData = await fetchUpcomingPublicHolidays(country.countryCode);
 
             // Log the fetched holiday data for debugging
             console.log('Holiday data for:', country.countryCode, holidayData);
