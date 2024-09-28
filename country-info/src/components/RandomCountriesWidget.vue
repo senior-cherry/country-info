@@ -1,12 +1,17 @@
 <template>
-    <div>
+    <div class="random-countries-widget">
+        <h2>Random Countries Widget</h2>
+        <div v-if="loading">Loading...</div>
+        <div v-if="error">{{ error }}</div>
         <div v-if="widgetForCountryHolidays.length">
-            <h2>Random Countries</h2>
-            <div v-for="rand in widgetForCountryHolidays" :key="rand.countryCode">
-                <p>Country Code: {{ rand.countryCode }}</p>
-                <p>Holiday Name: {{ rand.holidayName }}</p>
-                <p>Date: {{ rand.date }}</p>
+            <div v-for="rand in widgetForCountryHolidays" :key="rand.countryCode" class="random-countries-widget-items">
+                <p class="m-2 font-bold">{{ rand.countryCode }}</p>
+                <p class="m-2">{{ rand.holidayName }}</p>
+                <p class="m-2">{{ rand.date }}</p>
             </div>
+        </div>
+        <div v-else>
+            No random countries found
         </div>
     </div>
 </template>
@@ -16,42 +21,31 @@ import { fetchAvailableCountries, fetchData } from "@/api/getAvailableCountries"
 import { fetchRandomCountries, fetchUpcomingPublicHolidays } from "@/api/getUpcomingPublicHolidays"
 import { onMounted, ref } from "vue"
 
-const widgetForCountryHolidays = ref([]); // Holiday data for random countries
+const widgetForCountryHolidays = ref([]);
 const loading = ref(true);
 const error = ref('');
 
 const getRandomCountries = async () => {
     try {
         const countries = await fetchAvailableCountries();
-        // Shuffle countries and select 3 random countries
         const shuffledCountries = countries.sort(() => 0.5 - Math.random());
         const randomCountries = shuffledCountries.slice(0, 3);
 
-        // Log the selected random countries for debugging
-        console.log('Selected Random Countries:', randomCountries);
-
-        // Fetch holidays for each of the 3 random countries in parallel
         const holidayPromises = randomCountries.map(async (country) => {
             const holidayData = await fetchUpcomingPublicHolidays(country.countryCode);
 
-            // Log the fetched holiday data for debugging
-            console.log('Holiday data for:', country.countryCode, holidayData);
-
             return {
                 countryCode: country.name,
-                holidayName: holidayData?.[0]?.name || 'No upcoming holidays', // Take the first holiday's name or return a message
-                date: holidayData?.[0]?.date || 'No upcoming holidays', // Take the first holiday's date or return a message
+                holidayName: holidayData?.[0]?.name || "No upcoming holidays found",
+                date: holidayData?.[0]?.date || "No upcoming holidays found",
             };
         });
 
-        // Resolve all promises and store the results
         widgetForCountryHolidays.value = await Promise.all(holidayPromises);
-
-        // Log the widget data for debugging
-        console.log('Widget for Country Holidays:', widgetForCountryHolidays.value);
-
     } catch (err) {
-        console.error('Error fetching holidays:', err);
+        error.value = "Failed to load random countries holidays";
+    } finally {
+        loading.value = false;
     }
 };
 
@@ -62,5 +56,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.random-countries-widget {
+    width: 800px;
+    margin-top: 16px;
+    padding: 16px;
+}
 
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 16px;
+}
+
+.random-countries-widget-items {
+    border: 1px solid black;
+    padding: 16px;
+    margin-top: 16px;
+}
 </style>

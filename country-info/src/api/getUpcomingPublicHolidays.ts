@@ -1,7 +1,7 @@
 export const fetchUpcomingPublicHolidays = async (countryCode: String) => {
     console.log(countryCode)
     try {
-        const response = await fetch(`https://date.nager.at/api/v3/NextPublicHolidays/${countryCode}`)
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/v3/NextPublicHolidays/${countryCode}`)
         if (!response.ok) {
             console.log("Something went wrong");
         }

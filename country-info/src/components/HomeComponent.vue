@@ -2,13 +2,16 @@
     <div class="countries-list">
         <div>
             <input type="text" v-model="searchQuery" placeholder="Search for a country" />
-            <h1>Countries List</h1>
+            <h2>Countries List</h2>
             <div v-if="loading">Loading...</div>
             <div v-if="error">{{ error }}</div>
             <div v-if='filteredCountries.length'>
-                <div v-for="country in filteredCountries" :key="country.code">
-                    <router-link :to="{ name: 'country', params: {countryCode: country.countryCode} }">
-                        <span>{{country.name}}</span>
+                <div class="flex flex-col">
+                    <router-link
+                        :to="{ name: 'country', params: {countryCode: country.countryCode} }"
+                        v-for="country in filteredCountries" :key="country.code"
+                        class="countries-list-item">
+                        <strong>{{country.name}}</strong>
                     </router-link>
                 </div>
             </div>
@@ -53,5 +56,28 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.countries-list {
+    width: 500px;
+    margin-top: 16px;
+}
 
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 16px;
+}
+
+input {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin-top: 16px;
+    width: 300px;
+}
+
+.countries-list-item {
+    border: 1px solid black;
+    padding: 16px;
+    margin-top: 16px;
+}
 </style>

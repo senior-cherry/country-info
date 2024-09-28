@@ -1,5 +1,5 @@
 <template>
-  <main class="flex">
+  <main class="flex gap-5">
       <HomeComponent />
       <RandomCountriesWidget />
   </main>
