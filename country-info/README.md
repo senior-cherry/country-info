@@ -1,24 +1,46 @@
 # country-info
 
-This template should help get you started developing with Vue 3 in Vite.
+Country-Info is a Vue.js project created with Vite and TS, 
+that allows users to 
+receive list of all available countries from API. Besides, each country of the list is a link itself, 
+that directs to page with details. Moreover, there is a search input and random countries widget.
 
-## Recommended IDE Setup
+## Project Architecture
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Components: HomeComponent, RandomCountriesWidget, SingleCountry
 
-## Type Support for `.vue` Imports in TS
+Views: HomeView
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+Vue Router: Official router for Vue.js for navigation between views
 
-## Customize configuration
+Additional Libraries: TailwindCSS for styling
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Prerequisites
+Before you begin, ensure you have met the following requirements:
+
+You have installed Node.js and npm.
+
+You have a basic understanding of Vue.js.
 
 ## Project Setup
+
+Clone the repository:
+
+```sh
+git clone https://github.com/senior-cherry/country-info
+cd country-info
+```
+Install dependencies: Use npm:
 
 ```sh
 npm install
 ```
+
+Set up environment variables: 
+Create a .env file in the root of your project 
+and add necessary environment variables (VITE_API_URL).
+
+VITE_API_URL=https://date.nager.at
 
 ### Compile and Hot-Reload for Development
 
